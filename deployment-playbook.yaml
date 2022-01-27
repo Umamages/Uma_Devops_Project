@@ -1,9 +1,6 @@
 ---
 - hosts: server1
   tasks:
-  - name: remove existing repository
-    shell: rm -rf 2020_03_DO_Boston_casestudy_part_1
-    
   - name: pull repository
     shell: git clone https://github.com/hakanco/2020_03_DO_Boston_casestudy_part_1.git
   
