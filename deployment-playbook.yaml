@@ -2,10 +2,10 @@
 - hosts: server1
   tasks:
   - name: pull repository
-    shell: git clone https://github.com/hakanco/2020_03_DO_Boston_casestudy_part_1.git
+    shell: git clone https://github.com/Umamages/Uma_Devops_Project.git
   
   - name: deploy flask app
-    shell: kubectl apply -f  ~/2020_03_DO_Boston_casestudy_part_1/kubernetes.yaml
+    shell: kubectl apply -f  ~/Uma_Devops_Project/kubernetes.yaml
   
   - name: scale up to 5 replicas
     shell: kubectl scale deployment/capstone-part1-deployment --replicas=5
