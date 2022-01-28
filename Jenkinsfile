@@ -1,8 +1,8 @@
-environment {
+pipeline {
+    environment {
     registry = "umamages/Uma_Devops_Project"
     registryCredential = 'DockerHub'
-}
-pipeline {
+    }
   agent any
   stages {
     stage('Build Docker Image') {
