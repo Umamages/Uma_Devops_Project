@@ -27,7 +27,7 @@
     register: output
     
   - name: pull repository
-    shell: git clone https://github.com/hakanco/2020_03_DO_Boston_casestudy_part_1.git
+    shell: git clone https://github.com/Umamages/Uma_Devops_Project.git
   
   - name: deploy flask app
     shell: kubectl apply -f ~/Uma_Devops_Project/kubernetes.yaml
