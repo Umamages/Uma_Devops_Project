@@ -15,6 +15,7 @@ pipeline {
         script {
           docker.withRegistry('', registryCredential) {
           sh 'docker push buildapp/capstone-part1'
+          }
          }
       }
     }
