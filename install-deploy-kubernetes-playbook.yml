@@ -1,6 +1,6 @@
 
 ---
-- hosts: server1
+- hosts: ubuntu1
   tasks:
   - name: Update system
     shell: |
