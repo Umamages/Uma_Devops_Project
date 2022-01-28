@@ -1,3 +1,7 @@
+environment {
+    registry = "umamages/Uma_Devops_Project"
+    registryCredential = 'DockerHub'
+}
 pipeline {
   agent any
   stages {
@@ -8,8 +12,8 @@ pipeline {
     }
     stage('Push to Docker Hub') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'DockerHub', passwordVariable: 'dokerpass', usernameVariable: 'dockerhub')]) {
-          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+        script {
+          docker.withRegistry('', registryCredential) {
           sh 'docker push buildapp/capstone-part1'
          }
       }
