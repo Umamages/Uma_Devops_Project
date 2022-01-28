@@ -8,7 +8,7 @@ pipeline {
     }
     stage('Push to Docker Hub') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerhubpass', usernameVariable: 'dockerhubuser')]) {
+        withCredentials([usernamePassword(credentialsId: 'DockerHub', passwordVariable: 'dokerpass', usernameVariable: 'dockerhub')]) {
           sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
           sh 'docker push buildapp/capstone-part1'
          }
