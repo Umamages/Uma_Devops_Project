@@ -1,27 +1,22 @@
 pipeline {
-    environment {
-    registry = "umamages/Uma_Devops_Project"
-    registryCredential = 'DockerHub'
-    }
   agent any
   stages {
     stage('Build Docker Image') {
       steps {
-         sh 'docker build -t buildapp/capstone-part1 .'
+         sh 'docker build -t umamages/devops_project .'
       }
     }
     stage('Push to Docker Hub') {
       steps {
-        script {
-          docker.withRegistry('', registryCredential) {
-          sh 'docker push buildapp/capstone-part1'
-          }
+        withCredentials([usernamePassword(credentialsId: 'DockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+          sh 'docker push umamages/devops_project'
          }
       }
     }
    stage('Deploy with playbook'){
       steps{
-        sh 'ansible-playbook deployment-playbook.yaml'
+        sh 'ansible-playbook continous-deployment-playbook.yml'
      }
    }
   }
