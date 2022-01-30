@@ -1,23 +1,41 @@
 pipeline {
-  agent any
-  stages {
-    stage('Build Docker Image') {
-      steps {
-         sh 'docker build -t umamages/devops_project .'
-      }
+	environment {
+    registry = "umamages/devops_project1"
+    registryCredential = 'dockerhub'
     }
-    stage('Push to Docker Hub') {
-      steps {
-        withCredentials([usernamePassword(credentialsId: 'DockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-          sh 'docker push umamages/devops_project'
-         }
-      }
-    }
-   stage('Deploy with playbook'){
-      steps{
-        sh 'ansible-playbook deployment-playbook.yaml'
-     }
-   }
-  }
+	agent any
+    stages {
+        stage('Clone Repository') {
+            steps {
+               checkout scm
+            }
+        }
+        stage('Build Image') {
+            steps {
+               bat "docker build -t umamages/devops_project1 ."
+            }
+        }
+        stage('Push image') {
+            steps {
+               script {
+          docker.withRegistry( '', registryCredential ) {
+               bat "docker push umamages/devops_project1"
+				}
+            }
+        }
+	}
+        stage('Pull and Deploy image') {
+            steps {
+				sshagent(['Stage']) {
+                   script{
+                docker.withRegistry( '', registryCredential ) {
+                                ssh ubuntu@192.168.1.233 docker pull umamages/devops_project1
+                                bat "docker run -d -p 8000:80 devops_project1"
+                            
+                    }
+                }
+                      
+            }
+        }
+	}
 }
