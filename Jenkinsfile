@@ -29,7 +29,7 @@ pipeline {
 				sshagent(['Stage']) {
                    script{
                 docker.withRegistry( '', registryCredential ) {
-                                ssh ubuntu@192.168.1.233 docker pull umamages/devops_project1
+                                ssh uma@192.168.1.245 docker pull umamages/devops_project1
                                 bat "docker run -d -p 8000:80 devops_project1"
                             
                     }
