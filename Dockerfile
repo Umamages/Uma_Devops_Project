@@ -10,6 +10,6 @@ RUN pip --no-cache-dir install -r requirements.txt
 
 COPY . /app/
 
-EXPOSE 9090
+EXPOSE 8001
 
 CMD ["python", "web.py"]
