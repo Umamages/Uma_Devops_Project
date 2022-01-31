@@ -1,41 +1,28 @@
 pipeline {
-	environment {
-    registry = "umamages/devops_project1"
-    registryCredential = 'dockerhub'
+  agent any
+  stages {
+    stage('Docker Build') {
+      steps {
+         sh 'docker build -t umamages/devops_project .'
+      }
     }
-	agent any
-    stages {
-        stage('Clone Repository') {
-            steps {
-               checkout scm
-            }
-        }
-        stage('Build Image') {
-            steps {
-               bat "docker build -t umamages/devops_project1 ."
-            }
-        }
-        stage('Push image') {
-            steps {
-               script {
-          docker.withRegistry( '', registryCredential ) {
-               bat "docker push umamages/devops_project1"
-				}
-            }
-        }
-	}
-        stage('Pull and Deploy image') {
-            steps {
-				sshagent(['Stage']) {
-                   script{
-                docker.withRegistry( '', registryCredential ) {
-                                ssh uma@192.168.1.245 docker pull umamages/devops_project1
-                                bat "docker run -d -p 8000:80 devops_project1"
-                            
-                    }
-                }
-                      
-            }
-        }
-	}
+    stage('Docker Push') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+          sh 'docker push umamages/devops_project'
+         }
+      }
+    }
+    stage('My webapp Deployment with ansible playbook in Minikube Environment'){
+      steps{
+       withCredentials([usernamePassword(credentialsId: 'Live', passwordVariable: 'passwd_Live', usernameVariable: 'user_Live')]) {
+	sh "192.168.1.245 login -u ${env.user_Live} -p ${env.passwd_Live}"
+	sh 'ansible-playbook ansible.yml'
 }
+       }
+    }  
+  }
+}
+
+
