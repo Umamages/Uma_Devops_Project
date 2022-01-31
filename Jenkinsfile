@@ -8,7 +8,7 @@ pipeline {
     }
     stage('Docker Push') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'DockerHub', passwordVariable: 'dockerhubpass', usernameVariable: 'dockerhubuser')]) {
+        withCredentials([usernamePassword(credentialsId: 'DockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
           sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
           sh 'docker push umamages/devops_project'
          }
