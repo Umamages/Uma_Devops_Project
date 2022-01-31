@@ -14,14 +14,14 @@ pipeline {
          }
       }
     }
-    stage('My webapp Deployment with ansible playbook in Minikube Environment'){
-      steps{
-       withCredentials([usernamePassword(credentialsId: 'Live', passwordVariable: 'passwd_Live', usernameVariable: 'user_Live')]) {
-	sh "192.168.1.245 login -u ${env.user_Live} -p ${env.passwd_Live}"
-	sh 'ansible-playbook ansible.yml'
-}
-       }
-    }  
+    #stage('My webapp Deployment with ansible playbook in Minikube Environment'){
+     # steps{
+      # withCredentials([usernamePassword(credentialsId: 'Live', passwordVariable: 'passwd_Live', usernameVariable: 'user_Live')]) {
+	#sh "192.168.1.245 login -u ${env.user_Live} -p ${env.passwd_Live}"
+	#sh 'ansible-playbook ansible.yml'
+#}
+ #      }
+  #  }  
   }
 }
 
