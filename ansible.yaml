@@ -1,0 +1,5 @@
+---
+- hosts: servers
+  tasks:
+   - name: start kubernetes deployment and service using yml file
+     shell: ssh uma@192.168.1.245 kubectl apply -f /home/uma/Uma_Devops_Project
